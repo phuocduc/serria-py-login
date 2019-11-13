@@ -45,11 +45,27 @@
       {{ message }}
     </div>
     {% endfor %} {% endif %} {% endwith %}
-    {% include 'view/navbarr.html'%}
-    {% include 'view/body.html'%}
 
 
-    <!-- {%include 'view/body.html'%} -->
+    {% block navbarr %}
+        
+    {% endblock  %}
+
+
+    {% block content %}
+    {% endblock %}
+
+    {% block login %}
+
+    {% endblock %}
+
+    {% block logout %}
+    
+    {% endblock  %}
+
+    {% block blog %}
+    
+    {% endblock  %}
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

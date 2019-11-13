@@ -1,35 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <title>Sign Up</title>
-  </head>
-  {% with messages =
-    get_flashed_messages(with_categories=true) %}
-    <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
-    {% if messages %} {% for category, message in messages %}
-    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-      <button
-        type="button"
-        class="close"
-        data-dismiss="alert"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <!-- <strong>Title</strong> -->
-      {{ message }}
-    </div>
-    {% endfor %} {% endif %} {% endwith %}
-  <div class="container col-3 mt-5">
+{% extends 'base.html' %}
+{% block logout %}
+
+<div class="container col-3 mt-5">
   <body class="text-center" cz-shortcut-listen="true">
     <div id="_ptSelectionNoteText" style="display: none;">
       <span class="_ptSelectionNoteText__icon">
@@ -92,4 +64,5 @@
       </form>
     </div>
   </body>
-</html>
+
+  {% endblock  %}

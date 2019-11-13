@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request,redirect, url_for,flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin,login_user,current_user
+from flask_login import LoginManager, UserMixin,login_user,current_user,login_required,logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -13,6 +13,7 @@ db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "signin"
 
 class User(UserMixin,db.Model):
     __tablename__ = 'users' # hidden table name in sql
@@ -36,15 +37,14 @@ def load_user(user_id):
 
 @app.route('/',methods=['GET'])
 def root():
-    return render_template("index.html")
+    return render_template("view/body.html")
 
 
-@app.route('/signup')
-def signup():
-    return render_template("singup.html")
 
 @app.route('/signup', methods=['GET','POST'])
-def singup_post():
+def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('blog'))
     if request.method == "POST":
         user = User.query.filter_by(email=request.form['email']).first()
         if user:
@@ -58,12 +58,11 @@ def singup_post():
         return redirect(url_for("signup"))
     return render_template("signup.html")
 
-@app.route('/signin', methods=['GET'])
-def signin():
-    return render_template("signin.html")
 
 @app.route('/signin', methods=['GET','POST'])
-def signin_sucess():
+def signin():
+    if current_user.is_authenticated:
+        return redirect(url_for('blog'))
     if request.method == "POST":
         user = User.query.filter_by(email=request.form['email']).first()
         if user:
@@ -77,6 +76,12 @@ def signin_sucess():
         return redirect(url_for("signin"))
     return render_template("signin.html")
 
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("root"))
 
 
 class Blog(db.Model):
@@ -92,6 +97,8 @@ db.create_all()
 @app.route('/blog', methods=['GET','POST'])
 #add new entry
 def blog():
+    if not current_user.is_authenticated:
+        return redirect(url_for("signin"))
     if request.method == "POST":
         new_blog = Blog(title = request.form['title'],body = request.form['body'],author=request.form['author'])
         db.session.add(new_blog)
