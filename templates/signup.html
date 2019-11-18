@@ -1,5 +1,5 @@
-{% extends 'base.html' %}
-{% block logout %}
+{% extends 'base.html' %} {% block logout %}
+
 
 <div class="container col-3 mt-5">
   <body class="text-center" cz-shortcut-listen="true">
@@ -46,15 +46,22 @@
           type="password"
           name="password"
           id="inputPassword"
-          class="form-control"
+          class="form-control mb-2"
           placeholder="Password"
           required=""
         />
+        <label for="inputPassword" class="sr-only">Avatar URL</label>
+        <input
+          name="imgUrl"
+          placeholder="Image URL"
+          class="form-control"
+        />
+
         <div class="checkbox mb-3 mt-5">
           <label>
             Already a member? 
           </label>
-          <a href="/signin">Log In</a>
+          <a href="/">Log In</a>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">
           Sign Up
@@ -65,4 +72,4 @@
     </div>
   </body>
 
-  {% endblock  %}
+{% endblock %}

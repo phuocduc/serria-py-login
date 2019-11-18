@@ -1,14 +1,14 @@
 {% block form %} 
 welcome {{current_user.email}}
 
+
 <form action="" class="mt-2" method="POST">
-  <label for="">Title:</label>
-  <input type="text" name="title" />
-  <label for="">Body:</label>
-  <input type="text" name="body" />
-  <label for="">author:</label>
-  <input type="text" name="author" />
-  <button type="submit">Submit</button>
+  <label for="">Create Article:</label>
+  <span>
+    <input class="form-control" type="text" name="body" placeholder="{{current_user.firstname}}, what are you thinking about?" />
+
+    <button class="btn btn-outline-primary m-2" type="submit">Post</button>
+  </span>
 </form>
 
 {% endblock form %}
