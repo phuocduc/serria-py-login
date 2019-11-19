@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block blog %}
+
+        <nav class="navbar navbar-light bg-secondary text-uppercase" id="mainNav">
+        <div class="container">
+          <a class="navbar-brand">
+            <h3>Post</h3>
+          </a>
+            <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Sign Out</a>
+              </li>
+            </ul>
+        </div>
+        </nav>
+
+        {% include 'view/form_blog.html' %}
+
+
+
+
+  {%for post in posts%}
+
+        <div class="new_post">
+
+       
+        <!-- post  -->
+        <div class="card firstline_post" style="width: 28rem;">
+          <div class="card-body">
+            <div>
+                    <span class="card-title"><img src={{post.img_url}} class="card-img-top img-profile" alt="...">
+                      <a href={{url_for('view_post', id=post.id)}}>{{post.body}}</a></span>
+                </div>
+                
+                <p class="post-time">Post on: {{post.created}}</p>
+                
+                
+                <p>views {{post.view_count}}</p>
+                <p>like {{post.my_likes | length}}</p>
+
+                <form method="POST" action={{url_for('like_post', id=post.id)}}>
+                <button type="submit">Like</button>
+              </form>  
+              
+              </div>
+          <div class="container-fluid">
+              {%if post.user_id == current_user.id%}
+              <form action={{"/blog/" + post.id|string}} method="POST">
+                <button type="submit" class="more-menu-btn" role="menuitem">Delete</button>
+              </form>
+              {%else%}
+              
+              {%endif%}
+              
+              
+            </div>
+        </div>  
+      </div>
+    
+      
+  {%endfor%}
+
+    {% endblock  %}

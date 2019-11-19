@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+  
+{% block post %}
+
+  <div class="new_post">
+
+ 
+  <!-- post  -->
+  <div class="card firstline_post" style="width: 28rem;">
+    <div class="card-body">
+      <div>
+              <span class="card-title"><img src={{post.img_url}} class="card-img-top img-profile" alt="..."> {{post.body}}</span>
+          </div>
+          
+          <p class="post-time">Post on: {{post.created}}</p>
+          <p><a href={{"/post/" + post.id|string}}>View:</a> {{post.view_count}}</p>
+          
+        </div>
+    <div class="container-fluid">
+        {%if post.user_id == current_user.id%}
+        <form action={{"/blog/" + post.id|string}} method="POST">
+          
+          
+          <button type="submit" class="more-menu-btn" role="menuitem">Delete</button>
+        </form>
+        {%else%}
+        
+        {%endif%}
+        
+        
+      </div>
+  </div>  
+</div>
+  <!-- comment -->
+  <div class="container d-flex w-75">
+    <form method="POST" action="{{url_for('view_post', id=post.id)}}"
+    class="p-5 rounded-lg bg-light shadow-sm w-100">
+    <h5>Leave your comment</h5>
+    <textarea name='body' class="form-control" id="comment-body" rows="3"
+    placeholder="Leave your comments here {{current_user.email}}..."></textarea>
+    <button class="btn btn-small btn-success" type="submit">Comment</button>
+  </form>
+</div>
+
+{%for comment in comments%}
+<div class="render_comment">
+  <div class="render_comment_child">
+
+    <form method="POST" action="{{url_for('view_post', id=comment.id)}}"
+    >
+    
+    
+    <span class="card-title">
+        <div>{{comment.author_comment}}</div>
+      <div href={{url_for('view_post', id=post.id)}}>{{comment.body}}
+
+      </div>
+    </span>
+
+
+  </form>
+  </div>
+</div>
+      
+
+      {%endfor%}
+  </div>
+  
+  </div>
+  </div>
+{% endblock  %}
+ 
