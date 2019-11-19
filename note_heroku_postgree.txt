@@ -1,0 +1,126 @@
+Deploy Your First Flask App
+Milestone 0: Hello World
+Create a simple, one file Hello World application. Consult the flask documentation if you don't remember this, and don't forget to do your virtualenv.
+
+Milestone 1: Create an Account on Heroku
+Go to www.heroku.com and click Sign Up in the upper right corner.
+
+Preview
+
+After you've signed up, click on "Create a New App", and choose a nice, memorable name.
+
+Preview
+
+Preview
+
+You'll be taken to a dashboard page. Make sure that "Heroku CLI" is selected.
+
+Preview
+
+On this page you'll see a link to install the Heroku CLI. It's a bit different by platform, but go ahead and install it. If you haven't already set up SSH keys on your computer, the tool will also walk you through this process.
+
+After you've installed your app, open a terminal and run heroku login. It's a bit of a weird flow, the terminal will open the browser, where you log in, but now your CLI will remember your login.
+
+Preview
+
+Preview
+
+Now we're all set to go with Heroku.
+
+Milestone 2: Push to Heroku
+Heroku usually triggers by pushes to git. We will create a remote called heroku (instead of origin) and every time we push here, it'll kick off a new build.
+
+Make sure you create a .gitignore file to your project and then add the venv as a folder to be ignored by git.
+
+In your project directory:
+
+git init
+touch .gitignore
+echo venv >> .gitignore
+heroku git:remote -a YOUR_APP_NAME_HERE
+pip install gunicorn
+pip freeze > requirements.txt
+git commit -am "First Commit"
+NOTE: There's a small bug in pip with Linux; if you get an error message that complains aobut pkg-resources, be sure to remove an extra line from your requirements.txt that talks about pkg-resources.
+
+gunicorn is the server we'll use in production; it's faster and more secure than the webserver built into Flask.
+
+Create a new file, called Procfile. This file helps Heroku know what to do. In it, create one line:
+
+web gunicorn app:app
+This means for all web requests, send them to gunicorn running app:app. Now you're ready to deploy!
+
+git add .
+git commit -m "Adding Procfile"
+git push heroku master
+Milestone 3: Add Postgres
+Run the following command in terminal:
+
+heroku addons:create heroku-postgresql:hobby-dev --app YOUR_APP_NAME_HERE
+You should see output similar to: Preview
+
+To see the URL of your database, just type heroku config.
+
+Image
+
+Now we'll reference this. On Heroku we'll automatically get the right environment variable (that's what heroku config) is telling us. In our app.py, add the following:
+
+from flask_sqlalchemy import SQLAlchemy
+
+# ... later ...
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+db = SQLAlchemy(app)
+Be sure to do a pip install flask-sqlalchemy and a pip install psycopg2, and you'll have to pip freeze >> requirements.txt again.
+
+Milestone 5: Migrations, Yay
+You will need to make sure the migrations run on Heroku. Since it's your blog, you've probably already done flask db init and flask db migrate. Then, to apply these migrations to the new database you have in the cloud:
+
+heroku run flask db upgrade
+If you're lucky, there'll be no errors and you're done with the lab!
+
+
+
+Rocket 1: Making it work locally
+This is quite an easy rocket, but right now: our app will fail if we run it locally.
+
+Define (and set up) the environment variable for your local machine so you get the right DATABASE_URL.
+
+Rocket 2: Setting up Mailgun
+Go to the Heroku add-ons marketplace (https://elements.heroku.com/addons) and install Mailgun onto app.
+
+Send an email every time to yourself every time you get 10 views on your site.
+
+
+
+
+
+personal note:
+download postgre, pgadmin
+go to heroku install addon: heroku postgree
+get info from db credential and import into pgadmin
+
+change database in app.py to
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+import: 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+pip install:
+gunicorn: python web server gateway interface http server for unix
+psycopg2: tool for connection to postgreeSQLDB in python3
+
+
+create a file: env
+# connect from app.py to pgadmin using username and pass which create in pgadmin
+DATABASE_URL = postgresql://username:password@hostname:port/databasename
+
+
+To connect to heroku by python:
+requirement 2 file: Procfile and requirements.txt 
+file Procfile contain: web gunicorn app:app
+requirements.txt contain: pip freeze
+
+
+check database and compare heroku and local
