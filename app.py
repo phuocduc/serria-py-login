@@ -3,13 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin,login_user,current_user,login_required,logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 
 app = Flask(__name__)
 
 
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.secret_key = "abc"
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 db = SQLAlchemy(app)
