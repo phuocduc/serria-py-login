@@ -20,7 +20,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
-
+# ricardo comments
 
 login_manager = LoginManager()
 login_manager.init_app(app)
